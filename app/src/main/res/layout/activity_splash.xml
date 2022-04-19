@@ -18,31 +18,28 @@
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="0dp" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="0dp"
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:entries="@array/number"
+        android:text="Select Date"
+        android:padding="8dp"
+        android:onClick="setDate"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome" />
+        app:layout_constraintTop_toBottomOf="@+id/welcome"
+        app:layout_constraintVertical_bias="0.060000002" />
 
     <TextView
-        android:id="@+id/data"
-        android:layout_width="match_parent"
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:gravity="center_horizontal"
-        android:text="X%"
-        android:textSize="30sp"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <ImageView
-        android:id="@+id/weatherbackground"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_marginTop="16dp"
+        android:text="Please select date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
     <TextView
         android:id="@+id/temperature"
@@ -51,7 +48,7 @@
         android:gravity="center_horizontal"
         android:text="XX °C"
         android:textSize="90sp"
-        app:layout_constraintTop_toBottomOf="@+id/data"
+        app:layout_constraintTop_toBottomOf="@+id/date"
         tools:layout_editor_absoluteX="0dp" />
 
 
