@@ -2,6 +2,7 @@ package com.example.lubaba_midterm_22022;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,16 +15,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+
 public class Splash extends AppCompatActivity {
     String weatherWebserviceURL = "https://api.openweathermap.org/data/2.5/weather?q=london&appid=96bf76f06d33bd08a65dfc1b092065fb&units=metric";
-    ImageView weatherBackground;
-    TextView temperature, welcome, data, humidity;
+    TextView temperature, welcome, humidity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,44 +38,35 @@ public class Splash extends AppCompatActivity {
         mainButton3.setOnClickListener(e-> startActivity(new Intent(Splash.this,MainActivity.class)));
         mainButton4.setOnClickListener(e-> startActivity(new Intent(Splash.this,MainActivity2.class)));
 
-
         temperature = (TextView) findViewById(R.id.temperature);
         welcome = (TextView) findViewById(R.id.welcome);
-        data = (TextView) findViewById(R.id.data);
         humidity = (TextView) findViewById(R.id.humidity);
-        weatherBackground = (ImageView) findViewById(R.id.weatherbackground);
         weather(weatherWebserviceURL);
     }
 
-    public void weather(String url) {
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    public void setDate(View view){
+        TextView date=(TextView)findViewById(R.id.date);
+        Calendar calendar=Calendar.getInstance();
+        DateFormat dateFormat=DateFormat.getDateInstance();
+        DatePickerDialog.OnDateSetListener d=new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i) {
-                    case 0:
-                        data.setText(spinner.getSelectedItem().toString());
-                        break;
-                    case 1:
-                        data.setText(spinner.getSelectedItem().toString());
-                        break;
-                    case 2:
-                        data.setText(spinner.getSelectedItem().toString());
-                        break;
-                    case 3:
-                        data.setText(spinner.getSelectedItem().toString());
-                        break;
-                }
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                calendar.set(Calendar.YEAR,year);
+                calendar.set(Calendar.MONTH,month);
+                calendar.set(Calendar.DAY_OF_MONTH,day);
+                date.setText("Date Selected : "+dateFormat.format(calendar.getTime()));
             }
+        };
+        new DatePickerDialog(Splash.this,d,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
+    public void weather(String url) {
         JsonObjectRequest jsonObj = new JsonObjectRequest(Request.Method.GET,
                 url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.d("Lubaba","temperature and humidity are retrieved");
+                Log.d("Lubaba",response.toString());
                 try {
                     JSONObject jsonMain = response.getJSONObject("main");
 
@@ -82,7 +75,7 @@ public class Splash extends AppCompatActivity {
 
                     JSONArray weatherArray = response.getJSONArray("weather");
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.d("Lubaba","Error");
                 }
             }
         }, new Response.ErrorListener() {
